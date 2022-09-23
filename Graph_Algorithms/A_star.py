@@ -11,16 +11,18 @@ class A_star(ShortestPath):
         # provide A* implementation here
         unvisited = PriorityQueue()
         unvisited.insert(from_node_id, - distance(graph.get_node(from_node_id), graph.get_node(to_node_id)))
+        results = {}
         edge_to = {}
         dist_to = {}
-        m = 0
+        inserts = 0
+        visited = 0
+        compares = 0
         for i in graph.all_nodes:
             dist_to[i] = float('inf')
         edge_to[from_node_id] = None
         dist_to[from_node_id] = 0
-        n = 0
         while not unvisited.is_empty():
-            n += 1
+            visited += 1
             current = unvisited.pop()[0]
             if current == to_node_id:
                 break
@@ -28,14 +30,21 @@ class A_star(ShortestPath):
             for adj in adjacent:
                 temp = dist_to[current] + graph.get_node(current).get_weight(adj)
                 a = adj.get_node_id()
+                compares += 1
                 if a not in edge_to or temp < dist_to[a]:
                     dist_to[a] = temp
                     edge_to[a] = current
-                    m += 1
-                    unvisited.insert(a, temp + distance(graph.get_node(a), graph.get_node(to_node_id)))
-        print("num of inserts = ", m)
-        print("num of visited = ", n)
-        return edge_to, dist_to
+                    inserts += 1
+                    unvisited.insert(a, temp + 20*distance(graph.get_node(a), graph.get_node(to_node_id)))
+        results['edge_to'] = edge_to
+        results['dist_to'] = dist_to
+        results['inserts'] = inserts
+        results['visited'] = visited
+        results['compares'] = compares
+        return results
+
+    def get_name(self):
+        return "A_star"
 
 
 def distance(from_node_id: Station_Node, to_node_id: Station_Node):

@@ -10,6 +10,11 @@ from ShortestPath import ShortestPath
 from Test import Test
 from KPIs.CpuTime import CpuTime
 from KPIs.ExecutionTime import ExecutionTime
+from KPIs.Visited import Visited
+from KPIs.Inserts import Inserts
+from KPIs.Compares import Compares
+from Benchmark import Benchmark
+from Plotter import Plotter
 import matplotlib.pyplot as plt
 import time
 
@@ -26,8 +31,19 @@ london_sub_metrics = Metric_Extractor(london_sub_graph.graph)
 #london_sub_metrics.plot_node_dist()
 
 # creating an itinerary from station 36 to station 289
-itinerary = Itinerary(london_sub_graph.graph, 37, 123, A_star())
-print(itinerary.find_shortest_path())
-test = Test(london_sub_graph.graph, A_star(), ExecutionTime(), 37, 123)
-print("execution time = ", test)
+#itinerary = Itinerary(london_sub_graph.graph, 21, 220, A_star())
+#print(itinerary.find_shortest_path()[0])
+#test = Test(london_sub_graph.graph, A_star(), Compares(), 1, 2)
+#print("Compares = ", test.find_measurement())
+benchmark = Benchmark(london_sub_graph.graph, [Dijkstra(), A_star()], [5, 10, 15])
+results = benchmark.do_bench()
+print(results)
+result = results['Compares']
+plot_kpi = Plotter()
+plot_kpi.line('Compares', [Dijkstra(), A_star()], result)
+
+
+
+
+
 
