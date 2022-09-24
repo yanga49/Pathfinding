@@ -14,6 +14,7 @@ class A_star(ShortestPath):
         results = {}
         edge_to = {}
         dist_to = {}
+        line_to = {}
         inserts = 0
         visited = 0
         compares = 0
@@ -21,6 +22,7 @@ class A_star(ShortestPath):
             dist_to[i] = float('inf')
         edge_to[from_node_id] = None
         dist_to[from_node_id] = 0
+        line_to[from_node_id] = None
         while not unvisited.is_empty():
             visited += 1
             current = unvisited.pop()[0]
@@ -34,10 +36,12 @@ class A_star(ShortestPath):
                 if a not in edge_to or temp < dist_to[a]:
                     dist_to[a] = temp
                     edge_to[a] = current
+                    line_to[a] = graph.get_node(current).get_label(adj)
                     inserts += 1
-                    unvisited.insert(a, temp + 20*distance(graph.get_node(a), graph.get_node(to_node_id)))
+                    unvisited.insert(a, temp + 20*distance(graph.get_node(a), graph.get_node(to_node_id)) + line_change(line_to[current], line_to[a]))
         results['edge_to'] = edge_to
         results['dist_to'] = dist_to
+        results['line_to'] = line_to
         results['inserts'] = inserts
         results['visited'] = visited
         results['compares'] = compares
@@ -51,3 +55,8 @@ def distance(from_node_id: Station_Node, to_node_id: Station_Node):
     x = abs(from_node_id.lat - to_node_id.lat)
     y = abs(from_node_id.long - to_node_id.long)
     return math.sqrt(x * x + y * y)
+
+def line_change(prev_line, next_line):
+    if prev_line == next_line or prev_line is None:
+        return 0
+    return 1

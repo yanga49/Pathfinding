@@ -87,13 +87,13 @@ class Benchmark():
             for j in all_nodes:
                 paths = Itinerary(self.graph, i, j, A_star())
                 num = self.stations_traversed[0]
-                if self.repetitions > 0 and paths.find_shortest_path()[1] == num:
+                if self.repetitions > 0 and paths.find_shortest_path()['stations traversed'] == num:
                     num = self.repetitions
                     bench.append({'num': num, 'from_node_id': i, 'to_node_id': j})
                     return bench
                 for k in range(len(self.stations_traversed)):
                     num = self.stations_traversed[k]
-                    if paths.find_shortest_path()[1] == num and done[num] != 1:
+                    if paths.find_shortest_path()['stations traversed'] == num and done[num] != 1:
                         bench.append({'num': num, 'from_node_id': i, 'to_node_id': j})
                         done[num] = 1
                         counter += 1
