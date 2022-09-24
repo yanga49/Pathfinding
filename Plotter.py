@@ -25,6 +25,7 @@ class Plotter:
         all = []
         for values in result.values():
             all += values
+        print(all)
         scope = []
         counter = round(min(all), 1) - 0.2
         ceiling = round(max(all), 1) + 0.2
