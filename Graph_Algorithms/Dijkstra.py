@@ -36,9 +36,7 @@ class Dijkstra(ShortestPath):
                     dist_to[a] = temp
                     edge_to[a] = current
                     line_to[a] = graph.get_node(current).get_label(adj)
-                    # set priority using temp and consider line change
-                    weight = temp + line_change(line_to[current], line_to[a])
-                    unvisited.insert(a, weight)
+                    unvisited.insert(a, temp)
                     inserts += 1
         # return all values and KPIs as dictionary
         results['edge_to'] = edge_to
@@ -51,9 +49,3 @@ class Dijkstra(ShortestPath):
 
     def get_name(self):
         return "Dijkstra"
-
-
-def line_change(prev_line, next_line):
-    if prev_line == next_line or prev_line is None:
-        return 0
-    return 5

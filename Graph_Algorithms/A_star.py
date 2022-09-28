@@ -40,8 +40,6 @@ class A_star(ShortestPath):
                     inserts += 1
                     # set priority using distance to temp and distance heuristic
                     weight = temp + distance(graph.get_node(a), graph.get_node(to_node_id))
-                    # consider line change
-                    weight += line_change(line_to[current], line_to[a])
                     unvisited.insert(a, weight)
         # return all values and KPIs as dictionary
         results['edge_to'] = edge_to
@@ -60,9 +58,3 @@ def distance(from_node_id: Station_Node, to_node_id: Station_Node):
     x = abs(from_node_id.lat - to_node_id.lat)
     y = abs(from_node_id.long - to_node_id.long)
     return math.sqrt(x * x + y * y)
-
-
-def line_change(prev_line, next_line):
-    if prev_line == next_line or prev_line is None:
-        return 0
-    return 1
