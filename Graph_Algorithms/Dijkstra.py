@@ -15,11 +15,13 @@ class Dijkstra(ShortestPath):
         inserts = 0
         visited = 0
         compares = 0
+        # initialize all distances to inf
         for i in graph.all_nodes:
             dist_to[i] = float('inf')
         edge_to[from_node_id] = None
         dist_to[from_node_id] = 0
         line_to[from_node_id] = None
+        # visit nodes based on priority, relax edge_to if shorter dist_to is found
         while not unvisited.is_empty():
             visited += 1
             current = unvisited.pop()[0]
@@ -34,8 +36,11 @@ class Dijkstra(ShortestPath):
                     dist_to[a] = temp
                     edge_to[a] = current
                     line_to[a] = graph.get_node(current).get_label(adj)
-                    unvisited.insert(a, temp + line_change(line_to[current], line_to[a]))
+                    # set priority using temp and consider line change
+                    weight = temp + line_change(line_to[current], line_to[a])
+                    unvisited.insert(a, weight)
                     inserts += 1
+        # return all values and KPIs as dictionary
         results['edge_to'] = edge_to
         results['dist_to'] = dist_to
         results['line_to'] = line_to
@@ -46,6 +51,7 @@ class Dijkstra(ShortestPath):
 
     def get_name(self):
         return "Dijkstra"
+
 
 def line_change(prev_line, next_line):
     if prev_line == next_line or prev_line is None:

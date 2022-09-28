@@ -65,11 +65,14 @@ class Benchmark():
                     for kpi in [Compares(), Inserts(), Visited()]:
                         test = Test(self.graph, algo, kpi, case['from_node_id'], case['to_node_id'])
                         if counter == 1:
-                            compares[algo.get_name()].append({'traversed': case['num'], 'value': test.find_measurement()})
+                            compares[algo.get_name()].append({'traversed': case['num'],
+                                                              'value': test.find_measurement()})
                         elif counter == 2:
-                            inserts[algo.get_name()].append({'traversed': case['num'], 'value': test.find_measurement()})
+                            inserts[algo.get_name()].append({'traversed': case['num'],
+                                                             'value': test.find_measurement()})
                         elif counter == 3:
-                            visited[algo.get_name()].append({'traversed': case['num'], 'value': test.find_measurement()})
+                            visited[algo.get_name()].append({'traversed': case['num'],
+                                                             'value': test.find_measurement()})
                         counter += 1
             results['Compares'] = compares
             results['Inserts'] = inserts
@@ -83,8 +86,12 @@ class Benchmark():
         for i in self.stations_traversed:
             done[i] = 0
         all_nodes = self.graph.all_nodes
-        for i in all_nodes:
-            for j in all_nodes:
+        # shuffle all node keys
+        random_nodes = list(all_nodes.keys())
+        random.shuffle(random_nodes)
+        # find a random path (bench) that traverses specified number of stations
+        for i in random_nodes:
+            for j in random_nodes:
                 paths = Itinerary(self.graph, i, j, A_star())
                 num = self.stations_traversed[0]
                 if self.repetitions > 0 and paths.find_shortest_path()['stations traversed'] == num:

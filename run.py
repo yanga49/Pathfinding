@@ -37,12 +37,13 @@ print("Travel time: " + str(results['travel time']) + "\n" + " -> ".join(results
 
 test = Test(london_sub_graph.graph, A_star(), Compares(), 1, 2)
 print("Compares = ", test.find_measurement())
+
 benchmark = Benchmark(london_sub_graph.graph, [Dijkstra(), A_star()], [15], 30)
 results = benchmark.do_bench()
 print(results)
-result = results['CPU Time']
-plot_kpi = Plotter()
-plot_kpi.bar('CPU Time', 15, result)
+#result = results['CPU Time']
+#plot_kpi = Plotter()
+#plot_kpi.bar('CPU Time', 15, result)
 
 #benchmark = Benchmark(london_sub_graph.graph, [Dijkstra(), A_star()], [5, 10, 15, 20, 25, 30, 35])
 #results = benchmark.do_bench()
